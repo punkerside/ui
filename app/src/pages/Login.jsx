@@ -1,10 +1,10 @@
+// src/pages/Login.jsx
 import React, { useState } from 'react';
-import { login, signUp } from '../auth';
+import { login } from '../auth';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState('');
 
   const handleLogin = async () => {
@@ -13,15 +13,6 @@ const Login = () => {
       console.log('Inicio de sesión exitoso:', session);
     } catch (err) {
       setError(err.message || 'Error en inicio de sesión');
-    }
-  };
-
-  const handleSignUp = async () => {
-    try {
-      const result = await signUp(username, password);
-      console.log('Registro exitoso:', result);
-    } catch (err) {
-      setError(err.message || 'Error en el registro');
     }
   };
 
@@ -42,13 +33,8 @@ const Login = () => {
         style={{ margin: '10px', padding: '10px', width: '200px' }}
       />
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      {isLogin ? (
-        <button onClick={handleLogin} style={{ margin: '10px', padding: '10px', width: '100px' }}>Log in</button>
-      ) : (
-        <button onClick={handleSignUp} style={{ margin: '10px', padding: '10px', width: '100px' }}>Sign up</button>
-      )}
-      <button onClick={() => setIsLogin(!isLogin)} style={{ margin: '10px', padding: '10px', width: '100px' }}>
-        {isLogin ? 'Sign up' : 'Log in'}
+      <button onClick={handleLogin} style={{ margin: '10px', padding: '10px', width: '100px' }}>
+        Log in
       </button>
     </div>
   );
