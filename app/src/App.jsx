@@ -1,18 +1,26 @@
-// src/App.jsx
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Footer from './components/Footer';
-import { Auth } from 'aws-amplify';
+import userPool from './cognitoConfig';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    Auth.currentAuthenticatedUser()
-      .then(() => setIsAuthenticated(true))
-      .catch(() => setIsAuthenticated(false));
+    const currentUser = userPool.getCurrentUser();
+    if (currentUser) {
+      currentUser.getSession((err, session) => {
+        if (session && session.isValid()) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+        }
+      });
+    } else {
+      setIsAuthenticated(false);
+    }
   }, []);
 
   return (
