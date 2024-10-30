@@ -3,14 +3,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
-import axios from 'axios'; // Importa axios para realizar peticiones HTTP
+import axios from 'axios';
 
 const NewService = ({ setIsAuthenticated, userEmail }) => {
   const [serviceName, setServiceName] = useState('');
   const [status, setStatus] = useState('inactive');
   const navigate = useNavigate();
 
-  // Función para obtener la fecha y hora actual en el formato deseado
   const getCurrentFormattedDate = () => {
     const now = new Date();
     const year = now.getFullYear();
@@ -21,7 +20,6 @@ const NewService = ({ setIsAuthenticated, userEmail }) => {
     return `${year}${month}${day}${hours}${minutes}`;
   };
 
-  // Función para manejar el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -86,7 +84,8 @@ const NewService = ({ setIsAuthenticated, userEmail }) => {
               width: '100%',
               margin: '10px 0',
             }}>
-              <label>Status:</label>
+              {/* Cambia el tamaño del texto "Status:" */}
+              <label style={{ fontSize: '14px', fontWeight: 'bold' }}>Status:</label>
               <div style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -94,7 +93,8 @@ const NewService = ({ setIsAuthenticated, userEmail }) => {
                 borderRadius: '15px',
                 padding: '5px 10px',
                 color: 'white',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                fontSize: '13px' // Cambia el tamaño del texto en el campo de estado
               }} onClick={() => setStatus(status === 'active' ? 'inactive' : 'active')}>
                 {status.toUpperCase()}
               </div>

@@ -66,7 +66,16 @@ const Home = ({ setIsAuthenticated }) => {
 
         const fetchServiceCount = async () => {
           try {
-            const response = await axios.get('http://172.23.162.4:8000/services');
+            // Obtiene el token JWT del usuario autenticado
+            const token = session.getIdToken().getJwtToken();
+
+            // Llama a la API con el token en el encabezado de autorización
+            const response = await axios.get('http://172.23.162.4:8000/services', {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            });
+
             // Filtra los servicios que están activos
             const activeServices = response.data.filter(service => service.status === 'active');
             setServiceCount(activeServices.length); // Solo cuenta los activos
@@ -103,7 +112,7 @@ const Home = ({ setIsAuthenticated }) => {
           textAlign: 'center'
         }}>
           <h1>Welcome!</h1>
-          <p>This is the home page.</p>
+          <p style={{ fontSize: '13px' }}>This is the home page.</p>
           
           {/* Contenedor de las tarjetas */}
           <div style={{ display: 'flex', gap: '20px', marginTop: '20px', justifyContent: 'center' }}>

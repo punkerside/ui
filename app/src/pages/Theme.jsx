@@ -25,7 +25,7 @@ const Theme = ({ setIsAuthenticated, setDarkMode, darkMode }) => {
           textAlign: 'center',
         }}>
           <h1>Theme Settings</h1>
-          <p>This is the theme settings page.</p>
+          <p style={{ fontSize: '13px' }}>This is the theme settings page.</p> {/* Cambio en el tamaño de fuente */}
           <button
             onClick={toggleDarkMode}
             style={{

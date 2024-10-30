@@ -20,6 +20,12 @@ const Login = ({ setIsAuthenticated }) => {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleLogin();
+    }
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
       <input
@@ -34,6 +40,7 @@ const Login = ({ setIsAuthenticated }) => {
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        onKeyDown={handleKeyDown}
         style={{ margin: '10px', padding: '10px', width: '200px' }}
       />
       {error && <p style={{ color: 'red' }}>{error}</p>}

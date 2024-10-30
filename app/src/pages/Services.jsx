@@ -1,20 +1,41 @@
-// src/pages/Services.jsx
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import cognitoPool from '../cognitoConfig';
 
 const Services = ({ setIsAuthenticated }) => {
-  const [services, setServices] = useState([]); // Estado para almacenar los datos de los servicios
-  const [searchTerm, setSearchTerm] = useState(''); // Estado para el campo de búsqueda
+  const [services, setServices] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
-  // Función para obtener los datos de la API
+  // Función para obtener el token JWT del usuario
+  const getToken = () => {
+    const currentUser = cognitoPool.getCurrentUser();
+    if (currentUser) {
+      return new Promise((resolve, reject) => {
+        currentUser.getSession((err, session) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(session.getIdToken().getJwtToken());
+          }
+        });
+      });
+    }
+    return Promise.reject('No user session found');
+  };
+
+  // Función para obtener los servicios con el token de autorización
   const fetchServices = async () => {
     try {
-      const response = await axios.get('http://172.23.162.4:8000/services');
-      // Agregamos un campo "localStatus" a cada servicio para manejar el estado local del interruptor
+      const token = await getToken(); // Obtener el token JWT
+      const response = await axios.get('http://172.23.162.4:8000/services', {
+        headers: {
+          Authorization: `Bearer ${token}`, // Incluir el token en el encabezado
+        },
+      });
       const servicesWithLocalStatus = response.data.map(service => ({
         ...service,
         localStatus: service.status === 'active' ? 'ON' : 'OFF'
@@ -22,20 +43,22 @@ const Services = ({ setIsAuthenticated }) => {
       setServices(servicesWithLocalStatus);
     } catch (error) {
       console.error("Error fetching services:", error);
+      if (error.response && error.response.status === 401) {
+        // Si el token es inválido o caduca, redirige al login
+        setIsAuthenticated(false);
+        navigate('/login');
+      }
     }
   };
 
-  // Llama a fetchServices cuando el componente se monta
   useEffect(() => {
     fetchServices();
   }, []);
 
-  // Filtrado de servicios basado en el término de búsqueda
   const filteredServices = services.filter(service =>
     service.service_name && service.service_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Función para alternar el estado del interruptor
   const toggleStatus = (index) => {
     setServices(prevServices => {
       const updatedServices = [...prevServices];
@@ -44,7 +67,6 @@ const Services = ({ setIsAuthenticated }) => {
     });
   };
 
-  // Función para formatear la fecha `latest_change`
   const formatDate = (dateString) => {
     const year = dateString.slice(0, 4);
     const month = dateString.slice(4, 6);
@@ -128,7 +150,7 @@ const Services = ({ setIsAuthenticated }) => {
                     >
                       {service.localStatus === 'ON' ? (
                         <>
-                          <span style={{ color: '#fff', fontSize: '12px', marginLeft: '5px' }}>ON</span>
+                          <span style={{ color: '#fff', fontSize: '11px', marginLeft: '5px' }}>ON</span>
                           <div style={{
                             width: '20px',
                             height: '20px',
@@ -144,7 +166,7 @@ const Services = ({ setIsAuthenticated }) => {
                             borderRadius: '50%',
                             backgroundColor: '#fff',
                           }}></div>
-                          <span style={{ color: '#fff', fontSize: '12px', marginRight: '5px' }}>OFF</span>
+                          <span style={{ color: '#fff', fontSize: '11px', marginRight: '5px' }}>OFF</span>
                         </>
                       )}
                     </div>

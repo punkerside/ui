@@ -1,3 +1,4 @@
+// src/components/Sidebar.jsx
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FaHome, FaCog, FaServicestack, FaSignOutAlt } from 'react-icons/fa';
@@ -59,7 +60,7 @@ const Sidebar = ({ setIsAuthenticated }) => {
             }}
           >
             {item.icon}
-            <span style={{ marginLeft: '10px' }}>{item.label}</span>
+            <span style={{ marginLeft: '10px', fontSize: '14px' }}>{item.label}</span> {/* Ajusta el tamaño aquí */}
           </div>
         ))}
         <div style={{ padding: '0 20px', color: '#b0b0b0', fontSize: '14px', marginBottom: '10px' }}>Settings</div>
@@ -78,22 +79,27 @@ const Sidebar = ({ setIsAuthenticated }) => {
             }}
           >
             {item.icon}
-            <span style={{ marginLeft: '10px' }}>{item.label}</span>
+            <span style={{ marginLeft: '10px', fontSize: '14px' }}>{item.label}</span> {/* Ajusta el tamaño aquí */}
           </div>
         ))}
       </div>
-      <div
-        onClick={handleLogout}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: '10px 20px',
-          cursor: 'pointer',
-          color: '#20c997',
-        }}
-      >
-        <FaSignOutAlt />
-        <span style={{ marginLeft: '10px' }}>Log out</span>
+      
+      {/* Contenedor centrado para el botón Log out */}
+      <div style={{ display: 'flex', justifyContent: 'center', paddingBottom: '20px' }}>
+        <div
+          onClick={handleLogout}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: '10px 20px',
+            cursor: 'pointer',
+            color: '#20c997',
+            borderRadius: '8px',
+          }}
+        >
+          <FaSignOutAlt />
+          <span style={{ marginLeft: '10px', fontSize: '14px' }}>Log out</span> {/* Ajusta el tamaño aquí */}
+        </div>
       </div>
     </div>
   );
