@@ -1,16 +1,22 @@
 // src/pages/Login.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { login } from '../auth';
+import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({ setIsAuthenticated }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
       const session = await login(username, password);
       console.log('Inicio de sesión exitoso:', session);
+
+      // Cambia el estado de autenticación y redirige al Home
+      setIsAuthenticated(true);
+      navigate('/');
     } catch (err) {
       setError(err.message || 'Error en inicio de sesión');
     }

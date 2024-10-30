@@ -1,3 +1,4 @@
+// src/auth.js
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 import userPool from './cognitoConfig';
 
