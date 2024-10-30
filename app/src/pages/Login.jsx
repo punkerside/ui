@@ -1,5 +1,5 @@
 // src/pages/Login.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { login } from '../auth';
 import { useNavigate } from 'react-router-dom';
 
@@ -39,7 +39,19 @@ const Login = ({ setIsAuthenticated }) => {
         style={{ margin: '10px', padding: '10px', width: '200px' }}
       />
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <button onClick={handleLogin} style={{ margin: '10px', padding: '10px', width: '100px' }}>
+      <button
+        onClick={handleLogin}
+        style={{
+          margin: '10px',
+          padding: '10px',
+          width: '100px',
+          backgroundColor: '#20c997', // Color de fondo para Log in
+          color: 'white',             // Texto en blanco
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+        }}
+      >
         Log in
       </button>
     </div>

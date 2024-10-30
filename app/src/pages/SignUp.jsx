@@ -58,7 +58,19 @@ const SignUp = () => {
         style={{ margin: '10px', padding: '10px', width: '200px' }}
       />
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <button onClick={handleSignUp} style={{ margin: '10px', padding: '10px', width: '100px' }}>
+      <button
+        onClick={handleSignUp}
+        style={{
+          margin: '10px',
+          padding: '10px',
+          width: '100px',
+          backgroundColor: '#2c3e50', // Color de fondo para Sign up
+          color: 'white',             // Texto en blanco
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+        }}
+      >
         Sign up
       </button>
     </div>
