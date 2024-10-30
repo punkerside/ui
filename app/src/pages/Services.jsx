@@ -1,8 +1,8 @@
-// src/pages/Home.jsx
+// src/pages/Services.jsx
 import React from 'react';
 import Sidebar from '../components/Sidebar';
 
-const Home = ({ setIsAuthenticated }) => {
+const Services = ({ setIsAuthenticated }) => {
   return (
     <div style={{ display: 'flex' }}>
       <Sidebar setIsAuthenticated={setIsAuthenticated} />
@@ -16,11 +16,11 @@ const Home = ({ setIsAuthenticated }) => {
         textAlign: 'center',
         height: '100vh',
       }}>
-        <h1>Welcome!</h1>
-        <p>This is the home page.</p>
+        <h1>Services</h1>
+        <p>This is the services page.</p>
       </div>
     </div>
   );
 };
 
-export default Home;
+export default Services;

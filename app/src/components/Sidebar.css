@@ -1,0 +1,16 @@
+/* src/components/Sidebar.css */
+
+.menu-item {
+    transition: background-color 0.2s;
+    color: white;
+  }
+  
+  .menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .active-menu-item {
+    background-color: rgba(255, 255, 255, 0.2);
+    font-weight: bold;
+  }
+  
