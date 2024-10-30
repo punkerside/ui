@@ -181,3 +181,82 @@ resource "aws_cognito_user_pool_client" "main" {
     refresh_token = "days"
   }
 }
+
+resource "aws_cognito_identity_pool" "main" {
+  identity_pool_name               = "${var.project}-${var.env}-${var.service}"
+  allow_unauthenticated_identities = false
+
+  cognito_identity_providers {
+    provider_name = aws_cognito_user_pool.main.endpoint
+    client_id     = aws_cognito_user_pool_client.main.id
+  }
+}
+
+resource "aws_iam_role" "cognito_auth_role" {
+  name = "cognito_auth_role"
+
+  assume_role_policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "Federated": "cognito-identity.amazonaws.com"
+        },
+        "Action": "sts:AssumeRoleWithWebIdentity",
+        "Condition": {
+          "StringEquals": {
+            "cognito-identity.amazonaws.com:aud": aws_cognito_identity_pool.main.id
+          },
+          "ForAnyValue:StringLike": {
+            "cognito-identity.amazonaws.com:amr": "authenticated"
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "auth_role_policy" {
+  role       = aws_iam_role.cognito_auth_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonCognitoPowerUser"
+}
+
+resource "aws_iam_role" "cognito_unauth_role" {
+  name = "cognito_unauth_role"
+
+  assume_role_policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "Federated": "cognito-identity.amazonaws.com"
+        },
+        "Action": "sts:AssumeRoleWithWebIdentity",
+        "Condition": {
+          "StringEquals": {
+            "cognito-identity.amazonaws.com:aud": aws_cognito_identity_pool.main.id
+          },
+          "ForAnyValue:StringLike": {
+            "cognito-identity.amazonaws.com:amr": "unauthenticated"
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "unauth_role_policy" {
+  role       = aws_iam_role.cognito_unauth_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonCognitoPowerUser"
+}
+
+resource "aws_cognito_identity_pool_roles_attachment" "main" {
+  identity_pool_id = aws_cognito_identity_pool.main.id
+
+  roles = {
+    authenticated   = aws_iam_role.cognito_auth_role.arn
+    unauthenticated = aws_iam_role.cognito_unauth_role.arn
+  }
+}

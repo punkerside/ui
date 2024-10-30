@@ -56,3 +56,10 @@ html, body {
   .light-mode .footer {
     color: #333;
   }
+
+  .table-content th, .table-content td {
+    font-size: 13px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
