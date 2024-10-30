@@ -1,9 +1,12 @@
 import React from 'react';
+import '../App.css';
 
-const Footer = () => (
-  <footer style={{ position: 'fixed', bottom: 0, width: '100%', textAlign: 'center', padding: '10px', fontSize: '12px' }}>
-    Ⓒ 2024 PunkerSide | v0.0.1
-  </footer>
-);
+const Footer = () => {
+  return (
+    <footer className="footer">
+      Ⓒ 2024 Sandbox v0.0.2
+    </footer>
+  );
+};
 
 export default Footer;

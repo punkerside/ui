@@ -1,9 +1,8 @@
-// src/components/Sidebar.jsx
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FaHome, FaCog, FaServicestack, FaSignOutAlt } from 'react-icons/fa';
-import './Sidebar.css'; // Importación del archivo CSS
-import userPool from '../cognitoConfig'; // Importa el User Pool de Cognito
+import './Sidebar.css';
+import userPool from '../cognitoConfig';
 
 const Sidebar = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
@@ -12,10 +11,10 @@ const Sidebar = ({ setIsAuthenticated }) => {
   const handleLogout = () => {
     const currentUser = userPool.getCurrentUser();
     if (currentUser) {
-      currentUser.signOut(); // Cierra la sesión en Cognito
+      currentUser.signOut();
     }
-    setIsAuthenticated(false); // Actualiza el estado de autenticación en el componente principal
-    navigate('/login-options'); // Redirige a la página de opciones de login
+    setIsAuthenticated(false);
+    navigate('/login-options');
   };
 
   const menuItems = [

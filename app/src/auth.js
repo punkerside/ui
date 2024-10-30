@@ -1,8 +1,6 @@
-// src/auth.js
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 import userPool from './cognitoConfig';
 
-// Función para iniciar sesión
 export const login = (Username, Password) => {
   return new Promise((resolve, reject) => {
     const user = new CognitoUser({ Username, Pool: userPool });
@@ -15,7 +13,6 @@ export const login = (Username, Password) => {
   });
 };
 
-// Función para registrar un usuario
 export const signUp = (Username, Password, attributes = []) => {
   return new Promise((resolve, reject) => {
     userPool.signUp(Username, Password, attributes, null, (err, result) => {

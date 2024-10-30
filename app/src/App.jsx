@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
@@ -8,10 +7,14 @@ import LoginOptions from './pages/LoginOptions';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import userPool from './cognitoConfig';
+import './App.css';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem('darkMode') === 'true';
+  });
 
   useEffect(() => {
     const checkSession = () => {
@@ -33,20 +36,26 @@ const App = () => {
     checkSession();
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem('darkMode', darkMode);
+  }, [darkMode]);
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={isAuthenticated ? <Home setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/login-options" />} />
-        <Route path="/services" element={isAuthenticated ? <Services setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/login-options" />} />
-        <Route path="/theme" element={isAuthenticated ? <Theme setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/login-options" />} />
-        <Route path="/login-options" element={<LoginOptions isAuthenticated={isAuthenticated} />} />
-        <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
-        <Route path="/signup" element={<SignUp />} />
-      </Routes>
+      <div className={darkMode ? 'dark-mode' : 'light-mode'}>
+        <Routes>
+          <Route path="/" element={isAuthenticated ? <Home setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/login-options" />} />
+          <Route path="/services" element={isAuthenticated ? <Services setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/login-options" />} />
+          <Route path="/theme" element={isAuthenticated ? <Theme setIsAuthenticated={setIsAuthenticated} setDarkMode={setDarkMode} darkMode={darkMode} /> : <Navigate to="/login-options" />} />
+          <Route path="/login-options" element={<LoginOptions isAuthenticated={isAuthenticated} />} />
+          <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Routes>
+      </div>
     </Router>
   );
 };

@@ -1,4 +1,3 @@
-// src/pages/Login.jsx
 import React, { useState } from 'react';
 import { login } from '../auth';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +13,6 @@ const Login = ({ setIsAuthenticated }) => {
       const session = await login(username, password);
       console.log('Inicio de sesión exitoso:', session);
 
-      // Cambia el estado de autenticación y redirige al Home
       setIsAuthenticated(true);
       navigate('/');
     } catch (err) {
@@ -45,8 +43,8 @@ const Login = ({ setIsAuthenticated }) => {
           margin: '10px',
           padding: '10px',
           width: '100px',
-          backgroundColor: '#20c997', // Color de fondo para Log in
-          color: 'white',             // Texto en blanco
+          backgroundColor: '#20c997',
+          color: 'white',
           border: 'none',
           borderRadius: '5px',
           cursor: 'pointer',
