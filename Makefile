@@ -29,3 +29,6 @@ init:
 
 apply:
 	cd terraform/ && terraform apply -var="project=${project}" -var="env=${env}" -var="service=${service}" -var="domain=${domain}" -var="aws_route53_zone=${aws_route53_zone}"
+
+destroy:
+	cd terraform/ && terraform destroy -var="project=${project}" -var="env=${env}" -var="service=${service}" -var="domain=${domain}" -var="aws_route53_zone=${aws_route53_zone}"
